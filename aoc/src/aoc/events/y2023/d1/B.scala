@@ -5,4 +5,7 @@ import aoc.tools.*
 
 object B:
     val solve: Warp[Input, String] =
-        Warp.toLocation(throw NotImplementedError())
+        Warp.startAt[Input]
+            .calculate(_.readLines)
+            .multiverseWarp(Day1.CalibrationValue.parseWithNumberWords)
+            .move(_.map(_.number).sum.toString)
