@@ -4,5 +4,5 @@ import aoc.*
 import aoc.tools.*
 
 object B:
-  val solve: Warp[Input, String] =
-    Warp.toLocation(throw NotImplementedError())
+    val solve: Warp[Input, String] =
+        Warp.toLocation(throw NotImplementedError())

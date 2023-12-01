@@ -15,7 +15,7 @@ object Solutions:
         Problem("2019", 2, "a") -> y2019.d2.A.solve,
         Problem("2019", 2, "b") -> y2019.d2.B.solve,
         Problem("2023", 1, "a") -> y2023.d1.A.solve,
-        Problem("2023", 1, "b") -> y2023.d1.B.solve,
+        Problem("2023", 1, "b") -> y2023.d1.B.solve
     )
 
     val solve: Warp[Problem, String] =
