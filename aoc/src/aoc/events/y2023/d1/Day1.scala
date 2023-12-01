@@ -25,18 +25,14 @@ object Day1:
 
         val parseWithNumberWords: Warp[String, CalibrationValue] =
             Warp.startAt[String]
-                .calculate: text =>
-                    Warp.toLocation:
-                      text.replaceAll("one", "1")
-                        .replaceAll("two", "2")
-                        .replaceAll("three", "3")
-                        .replaceAll("four", "4")
-                        .replaceAll("five", "5")
-                        .replaceAll("six", "6")
-                        .replaceAll("seven", "7")
-                        .replaceAll("eight", "8")
-                        .replaceAll("nine", "9")
-                    .warp(parse)
-                    .move: result =>
-                        println(s"$text parsed to $result")
-                        result
+                .move: text =>
+                    text.replaceAll("one", "o1e")
+                        .replaceAll("two", "t2o")
+                        .replaceAll("three", "t3e")
+                        .replaceAll("four", "f4r")
+                        .replaceAll("five", "f5e")
+                        .replaceAll("six", "s6x")
+                        .replaceAll("seven", "s7n")
+                        .replaceAll("eight", "e8t")
+                        .replaceAll("nine", "n9e")
+                .warp(parse)
