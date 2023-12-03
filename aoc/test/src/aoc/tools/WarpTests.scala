@@ -5,14 +5,15 @@ import scala.concurrent.{Future, ExecutionContext}
 class WarpTests extends munit.FunSuite:
     given ExecutionContext = scala.concurrent.ExecutionContext.global
 
-    test("Warp to location yields location"):
+    test("Warp to location yields location") {
         val expected = "test"
 
         val result: Future[String] = Warp.toLocation("test").go
 
         result.map(result => assertEquals(result, expected))
+    }
 
-    test("Warp to location chained with move"):
+    test("Warp to location chained with move") {
         val expected = "second location"
 
         val result: Future[String] = Warp
@@ -21,8 +22,9 @@ class WarpTests extends munit.FunSuite:
             .go
 
         result.map(result => assertEquals(result, expected))
+    }
 
-    test("Warp as attempt"):
+    test("Warp as attempt") {
         val expected = 1110
 
         val result = Warp.toLocation(100)
@@ -31,3 +33,4 @@ class WarpTests extends munit.FunSuite:
             .go
 
         result.map(result => assertEquals(result, expected))
+    }

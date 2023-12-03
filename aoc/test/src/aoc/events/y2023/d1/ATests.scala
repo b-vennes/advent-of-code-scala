@@ -8,11 +8,13 @@ class ATests extends munit.FunSuite:
 
   given ExecutionContext = scala.concurrent.ExecutionContext.global
 
-  test("parsing example 1"):
+  test("parsing example 1") {
     val input = "a1bbbc1d"
     val expected = CalibrationValue(1, 1)
     val expectedRemaining = ""
     CalibrationValue.parse
         .jump(input)
-        .map: result =>
+        .map { result =>
           assertEquals(result, expected)
+        }
+  }

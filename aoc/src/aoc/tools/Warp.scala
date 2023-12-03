@@ -50,11 +50,12 @@ case class Warp[-A, +B](path: A => Future[B], drive: Drive):
       *   a new warp with an updated path
       */
     def move[C](move: B => C): Warp[A, C] =
-        Warp: (a: A) =>
+        Warp { (a: A) =>
             val futureB = path(a)
             val futureC = futureB.map(move)
             futureC
-        .swapDrive(drive)
+        }
+            .swapDrive(drive)
 
     /** Appends a follow step to the end of the warp path. A [[follow]] step is more complicated
       * than a [[move]], in that it can take an indefinite amount of time.
@@ -65,11 +66,12 @@ case class Warp[-A, +B](path: A => Future[B], drive: Drive):
       *   a new warp with an updated path
       */
     def follow[C](follow: B => Future[C]): Warp[A, C] =
-        Warp: (a: A) =>
+        Warp { (a: A) =>
             val futureB = path(a)
             val futureC = futureB.flatMap(follow)
             futureC
-        .swapDrive(drive)
+        }
+            .swapDrive(drive)
 
     /** Performs an additional warp after the current warp is completed. Aka a "double warp".
       *
@@ -79,14 +81,15 @@ case class Warp[-A, +B](path: A => Future[B], drive: Drive):
       *   a new warp with an updated path
       */
     def warp[C](warp: Warp[B, C]): Warp[A, C] =
-        Warp: (a: A) =>
+        Warp { (a: A) =>
             val futureB = path(a)
             val futureC = futureB
                 .flatMap(b =>
                     warp.jump(b)
                 )
             futureC
-        .swapDrive(drive)
+        }
+            .swapDrive(drive)
 
     /** Calculates the next warp to perform once the current warp is completed.
       *
@@ -99,9 +102,10 @@ case class Warp[-A, +B](path: A => Future[B], drive: Drive):
       *   a new warp with a path that will be updated once the warp is completed
       */
     def calculate[C](calculate: B => Warp.FromAnywhere[C]): Warp[A, C] =
-        Warp: (a: A) =>
+        Warp { (a: A) =>
             path(a).map(calculate).flatMap(_.go)
-        .swapDrive(drive)
+        }
+            .swapDrive(drive)
 
     /** The starting location is all set and we are ready to jump.
       *
@@ -157,6 +161,13 @@ object Warp:
     def doomed(failure: => Throwable, drive: Drive = Drive.standard): Warp[Any, Nothing] =
         new Warp(any => Future.failed(failure), drive)
 
+    def debug[A](message: A => String): Warp[A, A] =
+        Warp.startAt[A]
+            .move { a =>
+                println(message(a))
+                a
+            }
+
     extension [A](warp: Warp.FromAnywhere[A])
         /** Punch it!
           */
@@ -170,7 +181,8 @@ object Warp:
             given ExecutionContext = listWarp.drive.toContext
             listWarp
                 .follow(list =>
-                    list.map(warp.jump).foldRight(Future.successful(List.empty[C])):
+                    list.map(warp.jump).foldRight(Future.successful(List.empty[C])) {
                         case (nextFuture, futureList) =>
                             nextFuture.flatMap(next => futureList.map(next :: _))
+                    }
                 )

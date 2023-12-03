@@ -19,3 +19,7 @@ case class Input(event: String, day: Int):
 object Input:
     def forProblem(problem: Problem): Input =
         Input(problem.event, problem.day)
+
+    def readAll: Warp[Input, String] = Warp.startAt[Input].calculate(_.readAll)
+
+    def readLines: Warp[Input, List[String]] = Warp.startAt[Input].calculate(_.readLines)
