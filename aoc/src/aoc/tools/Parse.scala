@@ -1,6 +1,6 @@
 package aoc.tools
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Try
 import scala.annotation.tailrec
 
@@ -56,14 +56,19 @@ object Parse:
         }
 
     def repeat[A](parse: Parse[A]): Parse[List[A]] =
-        parse.calculate {
-            case (next, remaining) if remaining.isEmpty => Warp.toLocation(List(next) -> remaining)
-            case (next, remaining) =>
-                Warp.toPoint(repeat(parse).jump(remaining))
-                    .move { (result, remaining) =>
-                        (next :: result) -> remaining
-                    }
-        }
+        Warp.evade(
+            parse
+                .calculate {
+                    case (next, remaining) if remaining.isEmpty =>
+                        Warp.toLocation(List(next) -> remaining)
+                    case (next, remaining) =>
+                        Warp.toPoint(repeat(parse).jump(remaining))
+                            .move { (result, remaining) =>
+                                (next :: result) -> remaining
+                            }
+                },
+            Warp.startAt[String].move(List.empty[A] -> _)
+        )
 
     def words[A](values: String*): Parse[String] =
         Warp.calculate { input =>
@@ -91,6 +96,33 @@ object Parse:
                     )
                 case (parsed, remaining) => Warp.toLocation(List(parsed) -> remaining)
             }
+
+    def fallback[A](first: Parse[A], second: Parse[A]): Parse[A] =
+        Warp.startAt[String]
+            .calculate(text =>
+                given ExecutionContext = first.drive.toContext
+                Warp.toPoint(
+                    first
+                        .jump(text)
+                        .recoverWith {
+                            case firstError =>
+                                second
+                                    .jump(text)
+                                    .recoverWith {
+                                        case secondError =>
+                                            Future.failed(
+                                                RuntimeException(
+                                                    s"Failed to run multiple parsers: '$firstError' and '$secondError'"
+                                                )
+                                            )
+                                    }
+                        }
+                )
+            )
+
+    val empty: Parse[Unit] =
+        Warp.startAt[String]
+            .move(() -> _)
 
 extension [A](parse: Parse[A])
     def followedBy[B](parseB: Parse[B]): Parse[(A, B)] =

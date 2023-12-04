@@ -168,6 +168,16 @@ object Warp:
                 a
             }
 
+    def evade[A, B](warp: Warp[A, B], evade: Warp[A, B]): Warp[A, B] =
+        given ExecutionContext = warp.drive.toContext
+        Warp(a =>
+            warp.jump(a).recoverWith {
+                case _ => Warp.startAt[A]
+                        .warp(evade)
+                        .jump(a)
+            }
+        )
+
     extension [A](warp: Warp.FromAnywhere[A])
         /** Punch it!
           */
