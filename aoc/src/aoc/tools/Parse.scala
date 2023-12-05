@@ -83,19 +83,40 @@ object Parse:
         }
 
     def split[A](parse: Parse[A], separator: String): Parse[List[A]] =
-        parse
-            .calculate {
-                case (parsed, remaining) if remaining.startsWith(separator) =>
-                    Warp.toPoint(
-                        split(parse, separator)
-                            .move {
-                                case (parsedValues, remaining) =>
-                                    (parsed :: parsedValues) -> remaining
-                            }
-                            .jump(remaining.drop(separator.length))
-                    )
-                case (parsed, remaining) => Warp.toLocation(List(parsed) -> remaining)
-            }
+        Warp.evade(
+            parse
+                .calculate {
+                    case (parsed, remaining) if remaining.startsWith(separator) =>
+                        Warp.toPoint(
+                            split(parse, separator)
+                                .move {
+                                    case (parsedValues, remaining) =>
+                                        (parsed :: parsedValues) -> remaining
+                                }
+                                .jump(remaining.drop(separator.length))
+                        )
+                    case (parsed, remaining) => Warp.toLocation(List(parsed) -> remaining)
+                },
+            Warp.startAt[String].move(List.empty[A] -> _)
+        )
+
+    def splitRepeated[A](parse: Parse[A], repeatedSeparator: Char): Parse[List[A]] =
+        Warp.evade(
+            parse
+                .calculate {
+                    case (parsed, remaining) if remaining.startsWith(s"$repeatedSeparator") =>
+                        Warp.toPoint(
+                            splitRepeated(parse, repeatedSeparator)
+                                .move {
+                                    case (parsedValues, remaining) =>
+                                        (parsed :: parsedValues) -> remaining
+                                }
+                                .jump(remaining.dropWhile(_ == repeatedSeparator))
+                        )
+                    case (parsed, remaining) => Warp.toLocation(List(parsed) -> remaining)
+                },
+            Warp.startAt[String].move(List.empty[A] -> _)
+        )
 
     def fallback[A](first: Parse[A], second: Parse[A]): Parse[A] =
         Warp.startAt[String]
@@ -120,6 +141,14 @@ object Parse:
                 )
             )
 
+    val whitespace: Parse[String] =
+        Warp.startAt[String]
+            .move { s =>
+                val spaces = s.takeWhile(_ == ' ')
+                val remaining = s.drop(spaces.length)
+                spaces -> remaining
+            }
+
     val empty: Parse[Unit] =
         Warp.startAt[String]
             .move(() -> _)
@@ -133,6 +162,10 @@ extension [A](parse: Parse[A])
                 }
                 .jump(remaining)
         }
+
+    def ignoring[B](parseB: Parse[B]): Parse[A] =
+        followedBy(parseB)
+            .withParsed(_._1)
 
     def withParsed[B](f: A => B): Parse[B] =
         parse.move {
