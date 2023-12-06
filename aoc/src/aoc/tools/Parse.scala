@@ -49,6 +49,13 @@ object Parse:
                 )
         }
 
+    val letters: Parse[String] =
+        Warp.startAt[String]
+            .move { text =>
+                val parsed = text.takeWhile(_.isLetter)
+                parsed -> text.drop(parsed.length)
+            }
+
     def word(text: String): Parse[String] =
         Warp.calculate { input =>
             if input.startsWith(text) then Warp.toLocation(text -> input.drop(text.length))
@@ -100,7 +107,7 @@ object Parse:
             Warp.startAt[String].move(List.empty[A] -> _)
         )
 
-    def splitRepeated[A](parse: Parse[A], repeatedSeparator: Char): Parse[List[A]] =
+    def splitRepeated[A](parse: Parse[A], repeatedSeparator: String): Parse[List[A]] =
         Warp.evade(
             parse
                 .calculate {
@@ -111,12 +118,15 @@ object Parse:
                                     case (parsedValues, remaining) =>
                                         (parsed :: parsedValues) -> remaining
                                 }
-                                .jump(remaining.dropWhile(_ == repeatedSeparator))
+                                .jump(remaining.drop(repeatedSeparator.length))
                         )
                     case (parsed, remaining) => Warp.toLocation(List(parsed) -> remaining)
                 },
             Warp.startAt[String].move(List.empty[A] -> _)
         )
+
+    def splitRepeated[A](parse: Parse[A], repeatedSeparator: Char): Parse[List[A]] =
+        splitRepeated(parse, s"$repeatedSeparator")
 
     def fallback[A](first: Parse[A], second: Parse[A]): Parse[A] =
         Warp.startAt[String]
@@ -152,6 +162,14 @@ object Parse:
     val empty: Parse[Unit] =
         Warp.startAt[String]
             .move(() -> _)
+
+    val newline: Parse[Unit] =
+        Warp.startAt[String]
+            .calculate(s =>
+                if s.startsWith(System.lineSeparator()) then
+                    Warp.toLocation(() -> s.drop(System.lineSeparator().length))
+                else Warp.doomed(RuntimeException(s"Failed to find newline at the start of $s"))
+            )
 
 extension [A](parse: Parse[A])
     def followedBy[B](parseB: Parse[B]): Parse[(A, B)] =

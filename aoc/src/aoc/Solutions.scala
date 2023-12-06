@@ -22,6 +22,8 @@ object Solutions:
         Problem("2023", 3, "b") -> y2023.d3.B.solve,
         Problem("2023", 4, "a") -> y2023.d4.A.solve,
         Problem("2023", 4, "b") -> y2023.d4.B.solve,
+        Problem("2023", 5, "a") -> y2023.d5.A.solve,
+        Problem("2023", 5, "b") -> y2023.d5.B.solve,
         Problem("2023", 6, "a") -> y2023.d6.A.solve,
         Problem("2023", 6, "b") -> y2023.d6.B.solve
     )
