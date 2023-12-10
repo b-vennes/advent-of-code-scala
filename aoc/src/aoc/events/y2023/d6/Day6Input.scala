@@ -16,7 +16,6 @@ object Day6Input:
                 case ((_, times), distances) => times -> distances
             }
 
-
     val parseManyRaces: Parse[List[Race]] =
         parseTimesAndDistances
             .withParsed(parsed => parsed._1.zip(parsed._2).map(Race.apply))

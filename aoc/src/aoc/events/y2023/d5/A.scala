@@ -7,7 +7,6 @@ object A:
 
     def toLocation(maps: List[TypeMap]): Warp[(String, Long), (String, Long)] =
         Warp.startAt[(String, Long)]
-            .warp(Warp.debug(x => s"Current step $x"))
             .calculate {
                 case ("location", value) => Warp.toLocation("location" -> value)
                 case (current, value) => maps.find(_.in == current)
@@ -36,6 +35,5 @@ object A:
                     Warp.toLocation(seeds.toList)
                         .multiverseWarp(seedLocation(maps))
             }
-            .warp(Warp.debug(locations => locations.mkString(", ")))
             .move(_.min)
             .move(_.toString)

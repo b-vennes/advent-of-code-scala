@@ -1,5 +1,7 @@
 package aoc.events.y2023.d4
 
+import aoc.tools.*
+
 import scala.concurrent.ExecutionContext
 
 class BTests extends munit.FunSuite:
@@ -31,7 +33,9 @@ class BTests extends munit.FunSuite:
 
         val expected = 30L
 
-        B.parseCards.warp(B.calculateCards)
+        B.parseCards
+            .warp(Warp.debug(x => x.toString))
+            .warp(B.calculateCards)
             .jump(input)
             .map(result => assertEquals(result, expected))
     }

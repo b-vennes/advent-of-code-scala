@@ -108,6 +108,11 @@ object Parse:
         )
 
     def splitRepeated[A](parse: Parse[A], repeatedSeparator: String): Parse[List[A]] =
+        def dropWhileStartsWithSeparator(input: String): String =
+            if input.startsWith(repeatedSeparator) then
+                dropWhileStartsWithSeparator(input.drop(repeatedSeparator.length))
+            else input
+
         Warp.evade(
             parse
                 .calculate {
@@ -118,7 +123,7 @@ object Parse:
                                     case (parsedValues, remaining) =>
                                         (parsed :: parsedValues) -> remaining
                                 }
-                                .jump(remaining.drop(repeatedSeparator.length))
+                                .jump(dropWhileStartsWithSeparator(remaining))
                         )
                     case (parsed, remaining) => Warp.toLocation(List(parsed) -> remaining)
                 },

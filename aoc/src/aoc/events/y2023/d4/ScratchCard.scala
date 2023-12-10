@@ -22,7 +22,7 @@ object ScratchCard:
     def debugParse[A]: Warp[A, A] =
         Warp.debug(a => s"Parsed: $a")
 
-    val parseNumbersSeparatedBySpace =
+    val parseNumbersSeparatedBySpace: Parse[List[Long]] =
         Parse.splitRepeated(Parse.unsignedNum, ' ')
 
     val parse: Parse[ScratchCard] =
