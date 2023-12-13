@@ -1,5 +1,6 @@
 package aoc.events.y2023.d4
 
+import aoc.Warp
 import aoc.tools.*
 
 import scala.concurrent.ExecutionContext

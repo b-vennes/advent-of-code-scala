@@ -1,7 +1,6 @@
 package aoc.events.y2023.d5
 
 import aoc.*
-import aoc.tools.*
 
 object B:
 
@@ -18,7 +17,7 @@ object B:
                                 .calculate(ranges =>
                                     Warp.toLocation(ranges)
                                         .move(_.map(range => StepRange(m.out, range)))
-                                        .multiverseWarp(toLocation(maps))
+                                        .multiWarp(toLocation(maps))
                                         .move(_.flatten)
                                 )
                         )
@@ -33,7 +32,7 @@ object B:
             .calculate {
                 case (ranges, mappings) =>
                     Warp.toLocation(ranges)
-                        .multiverseWarp(toLocation(mappings))
+                        .multiWarp(toLocation(mappings))
                         .move(_.flatten)
             }
             .move(_.minBy(_.range.start).range.start)

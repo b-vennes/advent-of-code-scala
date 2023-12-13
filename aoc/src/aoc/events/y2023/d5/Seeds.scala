@@ -1,6 +1,6 @@
 package aoc.events.y2023.d5
 
-import aoc.tools.*
+import aoc.*
 
 opaque type Seeds = List[Long]
 

@@ -1,8 +1,8 @@
-package aoc.tools
+package aoc
 
+import scala.annotation.tailrec
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Try
-import scala.annotation.tailrec
 
 type Parse[A] = Warp[String, Parse.Success[A]]
 
@@ -180,6 +180,15 @@ extension [A](parse: Parse[A])
     def followedBy[B](parseB: Parse[B]): Parse[(A, B)] =
         parse.follow { case (a, remaining) =>
             parseB
+                .move { case (b, remaining) =>
+                    (a -> b) -> remaining
+                }
+                .jump(remaining)
+        }
+
+    def followedByWith[B](f: A => Parse[B]): Parse[(A, B)] =
+        parse.follow { case (a, remaining) =>
+            f(a)
                 .move { case (b, remaining) =>
                     (a -> b) -> remaining
                 }

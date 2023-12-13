@@ -1,7 +1,6 @@
 package aoc.events.y2023.d5
 
 import aoc.*
-import aoc.tools.*
 
 case class TypeMap(in: String, out: String, mappings: List[TypeMap.Mapping]):
     def add(mapping: TypeMap.Mapping): TypeMap =

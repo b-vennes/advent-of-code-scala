@@ -1,13 +1,12 @@
 package aoc.events.y2023.d3
 
 import aoc.*
-import aoc.tools.*
 
 object A:
 
     val parseEngineBlock =
         Warp.startAt[List[String]].move(_.zipWithIndex)
-            .multiverseWarp(
+            .multiWarp(
                 Warp.startAt[(String, Int)]
                     .follow {
                         case (line, index) =>

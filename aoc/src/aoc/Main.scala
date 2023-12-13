@@ -1,6 +1,5 @@
 package aoc
 
-import aoc.tools.{*, given}
 import scala.concurrent.*
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.*
@@ -9,11 +8,11 @@ import scala.util.*
 def main(args: String*): Unit =
     Problem
         .parseArgs
-        .warp(Solutions.solve)
+        .warp(Solution.solve)
         .jump(args)
         .onComplete {
             case Success(result) =>
                 println(s"result = $result")
             case Failure(e: Throwable) =>
-                e.printStackTrace
+                e.printStackTrace()
         }

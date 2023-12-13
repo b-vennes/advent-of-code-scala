@@ -1,6 +1,5 @@
 package aoc.events.y2019.d2
 
-import aoc.tools.*
 import aoc.*
 
 object B:
@@ -25,7 +24,7 @@ object B:
                 }
         }
 
-    val solve: Warp[Input, String] =
+    val solve: Solution =
         Day2.parseProgram
             .follow(program => findParams.jump((program, 19690720, 0, 0)))
             .move(_.toString)

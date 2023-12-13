@@ -1,6 +1,6 @@
 package aoc.events.y2019.d3
 
-import aoc.tools.*
+import aoc.*
 
 object Day3:
 

@@ -6,7 +6,7 @@ import aoc.tools.*
 object B:
     val solve: Warp[Input, String] =
         Input.readLines
-            .multiverseWarp(Game.parse)
+            .multiWarp(Game.parse)
             .move(games => games.map(_._1))
-            .multiverseWarp(Warp.startAt[Game].move(_.power))
+            .multiWarp(Warp.startAt[Game].move(_.power))
             .move(_.sum.toString)

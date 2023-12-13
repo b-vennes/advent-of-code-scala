@@ -1,12 +1,11 @@
 package aoc.events.y2023.d2
 
 import aoc.*
-import aoc.tools.*
 
 object A:
-    val solve: Warp[Input, String] =
+    val solve: Solution =
         Input.readLines
-            .multiverseWarp(Game.parse)
+            .multiWarp(Game.parse)
             .move(games =>
                 games
                     .map(_._1)

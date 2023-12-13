@@ -1,6 +1,5 @@
 package aoc.events.y2018.d1
 
-import aoc.tools.*
 import aoc.*
 
 object Day1:

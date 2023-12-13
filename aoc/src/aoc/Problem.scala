@@ -1,8 +1,5 @@
 package aoc
 
-import aoc.*
-import aoc.tools.*
-
 case class Problem(event: String, day: Int, section: String)
 
 object Problem:

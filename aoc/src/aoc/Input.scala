@@ -1,8 +1,5 @@
 package aoc
 
-import aoc.*
-import aoc.tools.*
-
 import scala.util.Try
 
 case class Input(event: String, day: Int):

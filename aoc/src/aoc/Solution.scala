@@ -1,12 +1,10 @@
 package aoc
 
-import aoc.*
-import aoc.events.*
-import aoc.tools.*
+import events.*
 
-object Solutions:
-    type Solution = Warp[Input, String]
+type Solution = Warp[Input, String]
 
+object Solution:
     val get: Map[Problem, Solution] = Map(
         Problem("2018", 1, "a") -> y2018.d1.A.solve,
         Problem("2018", 1, "b") -> y2018.d1.B.solve,
@@ -25,7 +23,9 @@ object Solutions:
         Problem("2023", 5, "a") -> y2023.d5.A.solve,
         Problem("2023", 5, "b") -> y2023.d5.B.solve,
         Problem("2023", 6, "a") -> y2023.d6.A.solve,
-        Problem("2023", 6, "b") -> y2023.d6.B.solve
+        Problem("2023", 6, "b") -> y2023.d6.B.solve,
+        Problem("2023", 11, "a") -> y2023.d11.solvePartA,
+        Problem("2023", 11, "b") -> y2023.d11.solvePartB
     )
 
     val solve: Warp[Problem, String] =

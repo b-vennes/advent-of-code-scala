@@ -1,6 +1,5 @@
 package aoc.events.y2019.d2
 
-import aoc.tools.{*, given}
 import aoc.*
 
 object Day2:
@@ -8,7 +7,7 @@ object Day2:
         Warp.startAt[Input]
             .calculate(_.readAll)
             .move(_.split(",").toList)
-            .multiverseWarp(Parse.unsignedNum)
+            .multiWarp(Parse.unsignedNum)
             .move(_.map(_._1).map(_.toInt))
             .move(_.toArray)
 

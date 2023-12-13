@@ -1,7 +1,6 @@
 package aoc.events.y2023.d6
 
 import aoc.*
-import aoc.tools.*
 
 object Day6Input:
 

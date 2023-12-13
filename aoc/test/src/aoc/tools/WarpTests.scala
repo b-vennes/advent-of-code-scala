@@ -1,6 +1,8 @@
 package aoc.tools
 
-import scala.concurrent.{Future, ExecutionContext}
+import aoc.Warp
+
+import scala.concurrent.{ExecutionContext, Future}
 
 class WarpTests extends munit.FunSuite:
     given ExecutionContext = scala.concurrent.ExecutionContext.global

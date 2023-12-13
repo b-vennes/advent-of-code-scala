@@ -1,7 +1,6 @@
 package aoc.events.y2023.d5
 
 import aoc.*
-import aoc.tools.*
 
 object A:
 
@@ -33,7 +32,7 @@ object A:
             .calculate {
                 case (seeds, maps) =>
                     Warp.toLocation(seeds.toList)
-                        .multiverseWarp(seedLocation(maps))
+                        .multiWarp(seedLocation(maps))
             }
             .move(_.min)
             .move(_.toString)

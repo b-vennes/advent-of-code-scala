@@ -1,6 +1,6 @@
 package aoc.events.y2023.d3
 
-import aoc.tools.*
+import aoc.*
 
 case class Box(topLeftX: Int, topLeftY: Int, bottomRightX: Int, bottomRightY: Int):
     def contains(pointX: Int, pointY: Int): Boolean =

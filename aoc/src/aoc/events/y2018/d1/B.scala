@@ -4,7 +4,6 @@ import scala.annotation.tailrec
 import scala.util.Try
 
 import aoc.*
-import aoc.tools.*
 
 object B:
     @tailrec
@@ -22,9 +21,9 @@ object B:
 
     /** This takes about 5 minutes of running to solve.
       */
-    val solve: Warp[Input, String] =
+    val solve: Solution =
         Warp.startAt[Input]
             .calculate(_.readLines)
-            .multiverseWarp(Day1.parseChange)
+            .multiWarp(Day1.parseChange)
             .move(parsedChanges => findRepeatedFrequency(List.empty, 0L, parsedChanges))
             .move(_.toString)

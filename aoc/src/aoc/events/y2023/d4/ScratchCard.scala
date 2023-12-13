@@ -1,6 +1,6 @@
 package aoc.events.y2023.d4
 
-import aoc.tools.*
+import aoc.*
 
 case class ScratchCard(index: Long, winners: List[Long], numbers: List[Long]):
     val winningNumbers: Long = numbers.count(winners.contains)

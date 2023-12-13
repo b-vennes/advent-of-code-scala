@@ -1,6 +1,6 @@
 package aoc.events.y2023.d1
 
-import aoc.tools.*
+import aoc.{Parse, Warp}
 
 object Day1:
 

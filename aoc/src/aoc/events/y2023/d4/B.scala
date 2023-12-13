@@ -1,7 +1,6 @@
 package aoc.events.y2023.d4
 
 import aoc.*
-import aoc.tools.*
 
 object B:
 
@@ -15,7 +14,7 @@ object B:
 
     val parseCards: Warp[List[String], List[ScratchCard]] =
         Warp.startAt[List[String]]
-            .multiverseWarp(ScratchCard.parse)
+            .multiWarp(ScratchCard.parse)
             .move(_.map(_._1))
 
     val solve: Warp[Input, String] =

@@ -1,8 +1,8 @@
-package aoc.tools
+package aoc
 
-import scala.util.*
-import scala.concurrent.*
 import scala.annotation.targetName
+import scala.concurrent.*
+import scala.util.*
 
 /** A warp drive provides the power to make a warp jump.
   *
@@ -187,7 +187,7 @@ object Warp:
         /** Splits the universe into many pieces and runs warp jumps from each location the initial
           * warp sends you to.
           */
-        def multiverseWarp[C](warp: Warp[B, C]): Warp[A, List[C]] =
+        def multiWarp[C](warp: Warp[B, C]): Warp[A, List[C]] =
             given ExecutionContext = listWarp.drive.toContext
             listWarp
                 .follow(list =>

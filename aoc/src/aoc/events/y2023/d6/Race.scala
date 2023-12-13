@@ -1,11 +1,12 @@
 package aoc.events.y2023.d6
 
-import aoc.events.y2023.d6.Race.getDistance
-import aoc.tools.Warp
+import aoc.*
 
 import scala.annotation.tailrec
 
 case class Race(time: Long, distance: Long):
+    import Race.*
+
     def waysToBeat: Int =
         @tailrec
         def calcWaysToBeat(next: Long, aggregated: Int = 0): Int =

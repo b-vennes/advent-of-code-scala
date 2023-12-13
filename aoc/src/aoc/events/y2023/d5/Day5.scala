@@ -1,6 +1,6 @@
 package aoc.events.y2023.d5
 
-import aoc.tools.*
+import aoc.*
 
 val parseInputSeeds: Parse[(Seeds, List[TypeMap])] =
     Seeds.parse
