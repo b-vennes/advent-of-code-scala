@@ -11,9 +11,9 @@ object Day6Input:
             .ignoring(Parse.word("#Distance:"))
             .ignoring(Parse.repeat(Parse.word(" ")))
             .followedBy(Parse.splitRepeated(Parse.unsignedNum, ' '))
-            .withParsed {
-                case ((_, times), distances) => times -> distances
-            }
+            .withParsed:
+                case ((_, times), distances) =>
+                    times -> distances
 
     val parseManyRaces: Parse[List[Race]] =
         parseTimesAndDistances
@@ -21,9 +21,9 @@ object Day6Input:
 
     val parseBigRace: Parse[Race] =
         parseTimesAndDistances
-            .withParsed {
-                case (time, distance) => Race(time.mkString.toLong, distance.mkString.toLong)
-            }
+            .withParsed:
+                case (time, distance) =>
+                    Race(time.mkString.toLong, distance.mkString.toLong)
 
     val asMultipleRaces: Warp[Input, List[Race]] =
         Input.readAll

@@ -16,7 +16,7 @@ object Round:
     case class Entry(color: Color, number: Long)
 
     val parseColor: Parse[Color] =
-        Warp.calculate {
+        Warp.calculate:
             case value if value.startsWith("blue") =>
                 Warp.toLocation(Color.Blue -> value.drop("blue".length))
             case value if value.startsWith("red") =>
@@ -24,24 +24,26 @@ object Round:
             case value if value.startsWith("green") =>
                 Warp.toLocation(Color.Green -> value.drop("green".length))
             case other =>
-                Warp.doomed(RuntimeException(s"Color '$other' does not start with a color."))
-        }
+                Warp.doomed(RuntimeException(
+                    s"Color '$other' does not start with a color."))
 
     val parseEntry: Parse[Entry] =
         Parse.unsignedNum
-            .followedBy(Parse.word(" "))
+            .ignoring(Parse.word(" "))
             .followedBy(parseColor)
-            .withParsed {
-                case ((number, _), color) => Entry(color, number)
-            }
+            .withParsed: (number, color) =>
+                Entry(color, number)
 
     val parse: Parse[Round] =
         Parse.split(parseEntry, ", ")
-            .withParsed(_.foldLeft(Round(0, 0, 0)) {
-                case (round, Entry(Color.Blue, amount))  => round.copy(blue = amount)
-                case (round, Entry(Color.Red, amount))   => round.copy(red = amount)
-                case (round, Entry(Color.Green, amount)) => round.copy(green = amount)
-            })
+            .withParsed(_.foldLeft(Round(0, 0, 0)):
+                case (round, Entry(Color.Blue, amount)) =>
+                    round.copy(blue = amount)
+                case (round, Entry(Color.Red, amount)) =>
+                    round.copy(red = amount)
+                case (round, Entry(Color.Green, amount)) =>
+                    round.copy(green = amount)
+            )
 
 case class Power(maxBlue: Long, maxRed: Long, maxGreen: Long):
 
@@ -65,10 +67,9 @@ case class Game(number: Long, rounds: List[Round]):
 
     def power: Long =
         rounds
-            .foldLeft(Power.starting) {
+            .foldLeft(Power.starting):
                 case (power, Round(blue, red, green)) =>
                     power.updateBlue(blue).updateRed(red).updateGreen(green)
-            }
             .get
 
 object Game:
@@ -76,13 +77,11 @@ object Game:
         Parse.word("Game ")
             .followedBy(Parse.unsignedNum)
             .followedBy(Parse.word(": "))
-            .withParsed {
+            .withParsed:
                 case ((_, num), _) => num
-            }
 
     val parse: Parse[Game] =
         parseGameTag
             .followedBy(Parse.split(Round.parse, "; "))
-            .withParsed {
+            .withParsed:
                 case (tag, rounds) => Game(tag, rounds)
-            }

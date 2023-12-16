@@ -21,15 +21,19 @@ object Day2:
             val read: Warp[(Int, Array[Int]), Op] =
                 Warp.startAt[(Int, Array[Int])]
                     .move((pos, program) =>
-                        Op.Add(program(pos + 1), program(pos + 2), program(pos + 3))
-                    )
+                        Op.Add(
+                            program(pos + 1),
+                            program(pos + 2),
+                            program(pos + 3)))
 
         object Mult:
             val read: Warp[(Int, Array[Int]), Op] =
                 Warp.startAt[(Int, Array[Int])]
                     .move((pos, program) =>
-                        Op.Mult(program(pos + 1), program(pos + 2), program(pos + 3))
-                    )
+                        Op.Mult(
+                            program(pos + 1),
+                            program(pos + 2),
+                            program(pos + 3)))
 
         val read: Warp[(Int, Array[Int]), Op] =
             Warp.calculate[(Int, Array[Int]), Op] { (pos, array) =>
@@ -60,7 +64,8 @@ object Day2:
             Warp.toPoint {
                 crank
                     .calculate {
-                        case Left(program)  => Warp.toPoint(runUntilHalt.jump(pos + 4, program))
+                        case Left(program) =>
+                            Warp.toPoint(runUntilHalt.jump(pos + 4, program))
                         case Right(program) => Warp.toLocation(program)
                     }
                     .jump(pos, program)

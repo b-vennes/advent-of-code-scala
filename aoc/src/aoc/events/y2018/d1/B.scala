@@ -16,8 +16,12 @@ object B:
         else
             changes match
             case head :: tail =>
-                findRepeatedFrequency(current :: seen, head + current, tail :+ head)
-            case _ => throw RuntimeException("The list of changes can't be empty")
+                findRepeatedFrequency(
+                    current :: seen,
+                    head + current,
+                    tail :+ head)
+            case _ =>
+                throw RuntimeException("The list of changes can't be empty")
 
     /** This takes about 5 minutes of running to solve.
       */
@@ -25,5 +29,6 @@ object B:
         Warp.startAt[Input]
             .calculate(_.readLines)
             .multiWarp(Day1.parseChange)
-            .move(parsedChanges => findRepeatedFrequency(List.empty, 0L, parsedChanges))
+            .move(parsedChanges =>
+                findRepeatedFrequency(List.empty, 0L, parsedChanges))
             .move(_.toString)

@@ -9,9 +9,8 @@ case class TypeMap(in: String, out: String, mappings: List[TypeMap.Mapping]):
     def map(value: Long): Long =
         mappings
             .map(_.map(value))
-            .collectFirst {
+            .collectFirst:
                 case Some(out) => out
-            }
             .getOrElse(value)
 
     def mapRange(range: ContRange): List[ContRange] =
@@ -19,12 +18,14 @@ case class TypeMap(in: String, out: String, mappings: List[TypeMap.Mapping]):
             mappings.foldLeft(List(range) -> List.empty[ContRange]) {
                 case ((unprocessed, processed), mapping) =>
                     unprocessed.map(mapping.mapRange)
-                        .foldLeft(List.empty[ContRange] -> processed) {
-                            case ((unprocessed, processed), (Some(next), moreUnprocessed)) =>
-                                (unprocessed ++ moreUnprocessed) -> (next :: processed)
+                        .foldLeft(List.empty[ContRange] -> processed):
+                            case (
+                                (unprocessed, processed),
+                                (Some(next), moreUnprocessed)) =>
+                                (unprocessed ++ moreUnprocessed) ->
+                                    (next :: processed)
                             case ((unprocessed, processed), (_, more)) =>
                                 (unprocessed ++ more) -> processed
-                        }
             }
         untouched ++ newRanges
 
@@ -40,7 +41,8 @@ object TypeMap:
             if diff >= 0 && diff < range then Some(outStart + diff)
             else None
 
-        def mapRange(contRange: ContRange): (Option[ContRange], List[ContRange]) =
+        def mapRange(contRange: ContRange)
+            : (Option[ContRange], List[ContRange]) =
             contRange.splice(ContRange(inStart, range)) match
             case Some(toMap) -> ignored =>
                 Some(toMap.startAt(toMap.start + diff)) -> ignored
@@ -53,9 +55,8 @@ object TypeMap:
         Parse.letters
             .ignoring(Parse.word("-to-"))
             .followedBy(Parse.letters)
-            .withParsed {
-                case (inName, outName) => TypeMap(inName, outName)
-            }
+            .withParsed: (inName, outName) =>
+                TypeMap(inName, outName)
             .ignoring(Parse.word(s" map:&&"))
             .followedBy(
                 Parse.splitRepeated(
@@ -68,10 +69,8 @@ object TypeMap:
                     "&&"
                 )
             )
-            .withParsed {
+            .withParsed:
                 case (starting, parsedItems) =>
-                    parsedItems.foldLeft(starting) {
+                    parsedItems.foldLeft(starting):
                         case (combined, ((inStart, outStart), range)) =>
                             combined.add(Mapping(inStart, outStart, range))
-                    }
-            }

@@ -9,4 +9,5 @@ object Day3:
 
     case class PathSection(direction: Direction, length: Int)
 
-    val parsePathSection: Warp[String, PathSection] = Warp.doomed(NotImplementedError())
+    val parsePathSection: Warp[String, PathSection] =
+        Warp.doomed(NotImplementedError())

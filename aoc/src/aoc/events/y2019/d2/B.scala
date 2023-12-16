@@ -5,24 +5,29 @@ import aoc.*
 object B:
 
     val findParams: Warp[(Array[Int], Int, Int, Int), (Int, Int)] =
-        Warp.calculate { (program, target, noun, verb) =>
+        Warp.calculate: (program, target, noun, verb) =>
             Warp.toPoint(
                 Day2
                     .runUntilHalt
-                    .jump(
-                        (0, program.updated(1, noun).updated(2, verb))
-                    )
-            )
+                    .jump((0, program.updated(1, noun).updated(2, verb))))
                 .move(result => result(0))
-                .calculate {
-                    case value if value == target => Warp.toLocation(noun -> verb)
+                .calculate:
+                    case value if value == target =>
+                        Warp.toLocation(noun -> verb)
                     case _ if verb >= noun =>
-                        Warp.toPoint(findParams.jump(program, target, noun + 1, 0))
+                        Warp.toPoint(findParams.jump(
+                            program,
+                            target,
+                            noun + 1,
+                            0))
                     case _ if verb > 99 =>
-                        Warp.doomed(RuntimeException("Valid verb and noun not found for target."))
-                    case _ => Warp.toPoint(findParams.jump(program, target, noun, verb + 1))
-                }
-        }
+                        Warp.doomed(RuntimeException(
+                            "Valid verb and noun not found for target."))
+                    case _ => Warp.toPoint(findParams.jump(
+                            program,
+                            target,
+                            noun,
+                            verb + 1))
 
     val solve: Solution =
         Day2.parseProgram

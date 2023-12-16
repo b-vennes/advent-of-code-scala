@@ -29,7 +29,6 @@ object Solution:
     )
 
     val solve: Warp[Problem, String] =
-        Warp.calculate { problem =>
+        Warp.calculate: problem =>
             Warp.toLocation(Input.forProblem(problem))
                 .warp(get(problem))
-        }

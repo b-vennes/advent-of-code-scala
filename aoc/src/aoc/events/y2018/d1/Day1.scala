@@ -15,7 +15,6 @@ object Day1:
     val parseChange: Warp[String, Long] =
         Parse
             .sign
-            .calculate { (sign, rem) =>
+            .calculate: (sign, rem) =>
                 Warp.toLocation(rem)
                     .warp(parseNumberWithSign(sign))
-            }

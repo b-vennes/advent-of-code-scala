@@ -10,9 +10,8 @@ def main(args: String*): Unit =
         .parseArgs
         .warp(Solution.solve)
         .jump(args)
-        .onComplete {
+        .onComplete:
             case Success(result) =>
                 println(s"result = $result")
             case Failure(e: Throwable) =>
                 e.printStackTrace()
-        }

@@ -35,8 +35,7 @@ object B:
                             first.number * second.number
                     }
                     .sum
-                    .toString
-            )
+                    .toString)
 
     val solve: Warp[Input, String] =
         Input.readLines

@@ -13,7 +13,8 @@ case class Race(time: Long, distance: Long):
             if next == time then aggregated
             else
                 val nextDistance = getDistance(next, time)
-                if nextDistance > distance then calcWaysToBeat(next + 1, aggregated + 1)
+                if nextDistance > distance then
+                    calcWaysToBeat(next + 1, aggregated + 1)
                 else calcWaysToBeat(next + 1, aggregated)
 
         calcWaysToBeat(1L)

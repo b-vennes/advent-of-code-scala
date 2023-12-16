@@ -16,16 +16,17 @@ object B:
                             Warp.toLocation(m.mapRange(range))
                                 .calculate(ranges =>
                                     Warp.toLocation(ranges)
-                                        .move(_.map(range => StepRange(m.out, range)))
+                                        .move(_.map(range =>
+                                            StepRange(m.out, range)))
                                         .multiWarp(toLocation(maps))
-                                        .move(_.flatten)
-                                )
-                        )
+                                        .move(_.flatten)))
             }
 
     val solve: Warp[Input, String] =
         Input.readAll
-            .move(_.replaceAll(s"${System.lineSeparator()}${System.lineSeparator()}", "##"))
+            .move(_.replaceAll(
+                s"${System.lineSeparator()}${System.lineSeparator()}",
+                "##"))
             .move(_.replaceAll(s"${System.lineSeparator()}", "&&"))
             .warp(parseInputRanges)
             .move(_._1)

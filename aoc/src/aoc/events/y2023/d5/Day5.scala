@@ -18,6 +18,5 @@ val parseInputRanges: Parse[(List[StepRange], List[TypeMap])] =
             TypeMap.parse,
             s"##"
         ))
-        .withParsed {
+        .withParsed:
             case ((_, seeds), maps) => seeds -> maps
-        }

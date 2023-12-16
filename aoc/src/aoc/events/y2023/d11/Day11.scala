@@ -25,19 +25,15 @@ extension (galaxies: List[Galaxy])
         galaxies.forall(!_.inColumn(column))
 
     def expandAfterColumn(column: Int, size: Int = 2): List[Galaxy] =
-        println(s"expanding at column $column")
-        galaxies.map {
+        galaxies.map:
             case Galaxy(x, y) if x > column =>
                 Galaxy(x + size - 1, y)
             case galaxy => galaxy
-        }
 
     def expandAfterRow(row: Int, size: Int = 2): List[Galaxy] =
-        println(s"expanding at row $row")
-        galaxies.map {
+        galaxies.map:
             case Galaxy(x, y) if y > row => Galaxy(x, y + size - 1)
             case galaxy                  => galaxy
-        }
 
     def runExpansion(size: Int = 2): List[Galaxy] =
         val cols = galaxies.map(_.x)
@@ -45,20 +41,15 @@ extension (galaxies: List[Galaxy])
         val colRange = cols.min.to(cols.max)
         val rowRange = rows.min.to(cols.max)
 
-        println(s"cols: $colRange")
-        println(s"rows: $rowRange")
-
-        val colExpanded: List[Galaxy] = colRange.foldRight(galaxies) {
+        val colExpanded: List[Galaxy] = colRange.foldRight(galaxies):
             case (col, galaxies) if galaxies.emptyColumn(col) =>
                 galaxies.expandAfterColumn(col, size)
             case (_, galaxies) => galaxies
-        }
 
-        rowRange.foldRight(colExpanded) {
+        rowRange.foldRight(colExpanded):
             case (row, galaxies) if galaxies.emptyRow(row) =>
                 galaxies.expandAfterRow(row, size)
             case (_, galaxies) => galaxies
-        }
 
     def sumPaths: Long =
         @tailrec
@@ -75,31 +66,26 @@ def parseGalaxies(y: Int, x: Int = 0): Parse[List[Galaxy]] =
         Parse
             .repeat(Parse.word("."))
             .followedBy(Parse.word("#"))
-            .withParsed {
+            .withParsed:
                 case (dots, _) => Galaxy(x + dots.length, y)
-            }
             .followedByWith(galaxy => parseGalaxies(y, galaxy.x + 1))
-            .withParsed {
+            .withParsed:
                 case head -> tail => head :: tail
-            },
+        ,
         Parse.empty.withParsed(_ => List.empty[Galaxy])
     )
 
 val parseGalaxiesAtRow: Warp[(String, Int), List[Galaxy]] =
     Warp.startAt[(String, Int)]
-        .calculate {
-            case text -> y =>
-                Warp.toLocation(text)
-                    .warp(parseGalaxies(y).move(_._1))
-        }
+        .calculate: (text, y) =>
+            Warp.toLocation(text)
+                .warp(parseGalaxies(y).move(_._1))
 
 val solvePartA: Solution =
     Input
         .readLines
         .move(_.zipWithIndex)
-        .multiWarp(
-            parseGalaxiesAtRow
-        )
+        .multiWarp(parseGalaxiesAtRow)
         .move(_.flatten)
         .move(_.runExpansion())
         .move(_.sumPaths)
@@ -109,9 +95,7 @@ val solvePartB: Solution =
     Input
         .readLines
         .move(_.zipWithIndex)
-        .multiWarp(
-            parseGalaxiesAtRow
-        )
+        .multiWarp(parseGalaxiesAtRow)
         .move(_.flatten)
         .move(_.runExpansion(1_000_000))
         .move(_.sumPaths)

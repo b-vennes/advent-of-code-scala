@@ -4,7 +4,7 @@ import scalanativelib._
 import scalafmt._
 
 object aoc extends ScalaNativeModule with ScalafmtModule {
-  override def scalaVersion = "3.2.2"
+  override def scalaVersion = "3.3.1"
   override def scalaNativeVersion = "0.4.16"
 
   override def ivyDeps = Agg(

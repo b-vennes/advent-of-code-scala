@@ -11,6 +11,5 @@ object Seeds:
     val parse: Parse[Seeds] =
         Parse.word("seeds: ")
             .followedBy(Parse.split(Parse.unsignedNum, " "))
-            .withParsed {
+            .withParsed:
                 case (_, seeds) => seeds
-            }

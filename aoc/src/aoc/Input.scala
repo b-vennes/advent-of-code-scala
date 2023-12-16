@@ -19,4 +19,5 @@ object Input:
 
     def readAll: Warp[Input, String] = Warp.startAt[Input].calculate(_.readAll)
 
-    def readLines: Warp[Input, List[String]] = Warp.startAt[Input].calculate(_.readLines)
+    def readLines: Warp[Input, List[String]] =
+        Warp.startAt[Input].calculate(_.readLines)

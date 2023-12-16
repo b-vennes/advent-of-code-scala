@@ -10,6 +10,5 @@ object StepRange:
             .unsignedNum
             .ignoring(Parse.word(" "))
             .followedBy(Parse.unsignedNum)
-            .withParsed {
-                case (start, range) => StepRange(step, ContRange(start, range))
-            }
+            .withParsed: (start, range) =>
+                StepRange(step, ContRange(start, range))

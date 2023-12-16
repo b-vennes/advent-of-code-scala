@@ -10,25 +10,23 @@ object Day1:
     object CalibrationValue:
         val parse: Warp[String, CalibrationValue] =
             Parse.repeat(Parse.digitOrLetter)
-                .move { (value, _) =>
-                    value.collect {
+                .move: (value, _) =>
+                    value.collect:
                         case i: Int => i
-                    }
-                }
-                .calculate {
+                .calculate:
                     case (head :: tail) =>
-                        Warp.toLocation(CalibrationValue(head, tail.lastOption.getOrElse(head)))
+                        Warp.toLocation(CalibrationValue(
+                            head,
+                            tail.lastOption.getOrElse(head)))
                     case values =>
                         Warp.doomed(
                             RuntimeException(
                                 s"Not enough numbers to make calibration values in ${values}"
-                            )
-                        )
-                }
+                            ))
 
         val parseWithNumberWords: Warp[String, CalibrationValue] =
             Warp.startAt[String]
-                .move { text =>
+                .move: text =>
                     text.replaceAll("one", "o1e")
                         .replaceAll("two", "t2o")
                         .replaceAll("three", "t3e")
@@ -38,5 +36,4 @@ object Day1:
                         .replaceAll("seven", "s7n")
                         .replaceAll("eight", "e8t")
                         .replaceAll("nine", "n9e")
-                }
                 .warp(parse)

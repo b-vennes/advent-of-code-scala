@@ -2,7 +2,12 @@ package aoc.events.y2023.d3
 
 import aoc.*
 
-case class Box(topLeftX: Int, topLeftY: Int, bottomRightX: Int, bottomRightY: Int):
+case class Box(
+    topLeftX: Int,
+    topLeftY: Int,
+    bottomRightX: Int,
+    bottomRightY: Int
+):
     def contains(pointX: Int, pointY: Int): Boolean =
         pointX >= topLeftX && pointX <= bottomRightX && pointY >= topLeftY && pointY <= bottomRightY
 
@@ -40,7 +45,8 @@ object Part:
                             Warp.toLocation(h -> tail.mkString)
                         case _ =>
                             Warp.doomed(
-                                RuntimeException(s"Expected part to not be a number or a '.'")
+                                RuntimeException(
+                                    s"Expected part to not be a number or a '.'")
                             )
                     )
             )
@@ -75,7 +81,10 @@ object EngineBlock:
                         Warp.toPoint(parseLine(y, x + num.toString.length)
                             .withParsed(_.prependTag(Tag(num, x, y)))
                             .jump(remaining))
-                    else Warp.toLocation(EngineBlock(List(Tag(num, x, y)), List.empty) -> "")
+                    else
+                        Warp.toLocation(EngineBlock(
+                            List(Tag(num, x, y)),
+                            List.empty) -> "")
                 case (Part(symbol, x, y), remaining) =>
                     if remaining.nonEmpty
                     then
@@ -84,8 +93,12 @@ object EngineBlock:
                             .jump(remaining))
                     else
                         Warp.toLocation(
-                            EngineBlock(List.empty, List(Part(symbol, x, y))) -> ""
+                            EngineBlock(
+                                List.empty,
+                                List(Part(symbol, x, y))) -> ""
                         )
                 case (_, remaining) =>
-                    Warp.toLocation(EngineBlock(List.empty, List.empty) -> remaining)
+                    Warp.toLocation(EngineBlock(
+                        List.empty,
+                        List.empty) -> remaining)
             }

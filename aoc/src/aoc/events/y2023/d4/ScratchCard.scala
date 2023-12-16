@@ -13,7 +13,8 @@ case class ScratchCard(index: Long, winners: List[Long], numbers: List[Long]):
 
     def winsCards(context: List[ScratchCard]): Long =
         1 + context
-            .filter(other => other.index > index && other.index <= index + winningNumbers)
+            .filter: other =>
+                other.index > index && other.index <= index + winningNumbers
             .map(_.winsCards(context))
             .sum
 
@@ -38,7 +39,6 @@ object ScratchCard:
             .ignoring(Parse.whitespace)
             .followedBy(parseNumbersSeparatedBySpace)
             .ignoring(Parse.whitespace)
-            .withParsed {
+            .withParsed:
                 case ((index, winners), numbers) =>
                     ScratchCard(index, winners, numbers)
-            }
