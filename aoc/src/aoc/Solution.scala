@@ -24,6 +24,7 @@ object Solution:
         Problem("2023", 5, "b") -> y2023.d5.B.solve,
         Problem("2023", 6, "a") -> y2023.d6.A.solve,
         Problem("2023", 6, "b") -> y2023.d6.B.solve,
+        Problem("2023", 7, "a") -> y2023.d7.solvePartA,
         Problem("2023", 11, "a") -> y2023.d11.solvePartA,
         Problem("2023", 11, "b") -> y2023.d11.solvePartB
     )

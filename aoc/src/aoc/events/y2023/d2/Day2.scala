@@ -1,7 +1,6 @@
 package aoc.events.y2023.d2
 
 import aoc.*
-import aoc.tools.*
 
 case class Round(blue: Long, red: Long, green: Long):
     def isPossible(blueDice: Long, redDice: Long, greenDice: Long): Boolean =
